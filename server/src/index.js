@@ -1,37 +1,84 @@
-const { User } = require( './db/models' );
-const bcrypt = require( 'bcrypt' );
-/*
-* createUser
-* getUserById
-* updateUser
-* deleteUser
-* */
+import {User, sequelize} from './db/models' ;
+import {Model, DataTypes} from 'sequelize';
+import tr from 'moment/locale/tr';
 
-const hashPassword = async  password => {
-  try {
-    return bcrypt.hash( password, 10);
-  } catch (e) {
+class Task extends Model {
 
-  }
-};
+}
 
-const createUser = async data => {
-  try {
-    data.passwordHash = await hashPassword( data.password )
-    const createdUser = await User.create( data );
+Task.init({
+            value: {
+              type: DataTypes.STRING,
+              allowNull: false,
+              validate: {
+                notEmpty: true,
+              },
+            },
+            deadLine: {
+              type: DataTypes.DATE,
+              allowNull: false,
+              validate: {
+                isDate: true,
+                isAfter: new Date(),
+              },
+            },
+            isDone: {
+              type: DataTypes.BOOLEAN,
+              defaultValue: false,
+              allowNull: false,
+            },
+          }, {
+            sequelize,
+            timestamps: true,
+          });
 
-    return createdUser;
-  } catch (e) {
-    throw e;
-  }
-};
+/// Tasks n:1 Users
 
-createUser( {
-  firstName: "Name",
-  lastName: "Surname",
-  email: "test@gmail.com",
-  login: "login_login12",
-  password: "teh1234_utI"
-            })
-.then(console.log)
-.catch(console.err);
+Task.belongsTo(User, {
+  foreignKey: {
+    name: 'ownerId',
+  },
+});
+User.hasMany(Task, {
+  foreignKey: {
+    name: 'ownerId',
+  },
+});
+
+Task.sync({
+            force: true,
+          });
+
+class Role extends Model {
+
+}
+
+Role.init({
+            name: {
+              type: DataTypes.STRING,
+              unique: true,
+              allowNull: false,
+            },
+          }, {
+            sequelize,
+          });
+
+class UserRoles extends Model{
+
+}
+
+UserRoles.init({
+
+               }, {
+  sequelize,
+});
+
+Role.belongsToMany(User,{
+  through: 'UserRoles',
+});
+
+User.belongsToMany(Role, {
+  through: 'UserRoles'
+});
+
+Role.sync();

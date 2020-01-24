@@ -1,4 +1,7 @@
 'use strict';
+
+import bcrypt from 'bcrypt';
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: {
@@ -30,13 +33,14 @@ module.exports = (sequelize, DataTypes) => {
         len: [6, 16],
       }
     },
-    passwordHash: {
+    password: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: 'passwordHash',
+      set (val) {
+        this.setDataValue( 'password', bcrypt.hashSync( val, 10 ) );
+      }
     },
   }, {});
-  User.associate = function(models) {
-    // associations can be defined here
-  };
   return User;
 };
