@@ -9,16 +9,27 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       isDone: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
       },
       value: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull:false,
       },
       deadline: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull:false,
       },
       createdAt: {
         allowNull: false,
