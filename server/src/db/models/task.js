@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
     Task.belongsTo( models.User, {
       foreignKey: {
         field: 'userId',
+      },
+      as: {
+        singular: 'owner',
+        plural: 'owners'
       }
     } );
   };
