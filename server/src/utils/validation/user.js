@@ -17,4 +17,12 @@ export const createUserSchema = Joi.object( {
                                               email: emailSchema.required(),
                                               login: loginSchema.required(),
                                               password: passwordSchema
+                                            }
+
+export const updateUserSchema = Joi.object( {
+                                              firstName: nameSchema.required(),
+                                              lastName: nameSchema.required(),
+                                              email: emailSchema.required(),
+                                              login: loginSchema.required(),
+                                              password: passwordSchema
                                             } ).min( 1 ).max( 5 );
