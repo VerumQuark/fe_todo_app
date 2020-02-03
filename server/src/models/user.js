@@ -1,10 +1,10 @@
 'use strict';
 
-import bcrypt from 'bcrypt';
-import { LOGIN_PATTERN, NAME_PATTERN } from '../../constants';
+import bcrypt                          from 'bcrypt';
+import { LOGIN_PATTERN, NAME_PATTERN } from '../constants';
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const User = sequelize.define( 'User', {
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
       validate: {
-        isEmail:true,
+        isEmail: true,
       }
     },
     login: {
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         this.setDataValue( 'password', bcrypt.hashSync( val, 10 ) );
       }
     },
-  }, {});
+  }, {} );
 
   User.associate = function (models) {
     User.hasMany( models.Task, {
@@ -51,6 +51,9 @@ module.exports = (sequelize, DataTypes) => {
         field: 'userId',
       },
       as: 'tasks'
+    } );
+    User.belongsToMany( models.Role, {
+      through: 'UserRoles',
     } );
   };
 

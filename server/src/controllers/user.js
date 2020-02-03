@@ -1,9 +1,10 @@
-import { User } from './../db/models';
+import { User }  from '../models';
 import AppErrors from '../utils/applicationErrors';
 
 export async function createUser (req, res, next) {
   try {
     const createdUser = await User.create( req.body );
+
     if (createdUser) {
       const userData = createdUser.get();
       delete userData.password;
@@ -48,7 +49,7 @@ export async function getUserByPk (req, res, next) {
 
       return res.send( foundUser );
     }
-    next( new AppErrors.NotFoundError('User') );
+    next( new AppErrors.NotFoundError( 'User' ) );
   } catch (e) {
     next( e );
   }
@@ -63,9 +64,9 @@ export async function deleteUserByPk (req, res, next) {
                                                    }
                                                  } );
     if (deletedRowsCount) {
-      res.send( `${deletedRowsCount}` );
+      return res.send( `${deletedRowsCount}` );
     }
-    next( new AppErrors.NotFoundError('User') );
+    next( new AppErrors.NotFoundError( 'User' ) );
 
   } catch (e) {
     next( e );

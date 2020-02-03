@@ -1,10 +1,10 @@
-import userSchema from '../../utils/validation/user.js';
+import taskSchema from '../../utils/validation/task.js';
 
-function createUserValidationMW (isCreateMode = true) {
+function createTaskValidationMW (isCreateMode = true) {
   return async (req, res, next) => {
     try {
 
-      req.body = await userSchema.validateAsync( req.body, {
+      req.body = await taskSchema.validateAsync( req.body, {
         context: {
           isCreateMode,
         }
@@ -17,5 +17,5 @@ function createUserValidationMW (isCreateMode = true) {
 }
 
 
-export const validateUserOnCreate = createUserValidationMW();
-export const validateUserOnUpdate = createUserValidationMW( false );
+export const validateTaskOnCreate = createTaskValidationMW();
+export const validateTaskOnUpdate = createTaskValidationMW( false );
