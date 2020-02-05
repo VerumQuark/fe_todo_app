@@ -63,6 +63,29 @@ class TaskController {
       next( e );
     }
   }
+
+  async getTasks (req, res, next) {
+    try {
+
+      const {
+        authorizationData: {
+          id: userId
+        }
+      } = req;
+
+      const tasks = await Task.findAll(
+        {
+          where: {
+            userId,
+          }
+        } )
+      ;
+      res.send( tasks );
+    } catch (e) {
+      next( e );
+    }
+  }
+
 }
 
 export default new TaskController();

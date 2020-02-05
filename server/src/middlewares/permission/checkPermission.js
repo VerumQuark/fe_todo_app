@@ -4,12 +4,13 @@ import appErrors from '../../utils/applicationErrors'
  * @param {EntityType} entity
  * @return {function({ActionType}): function(...[*]=)}
  */
-export default (entity) => {
+export default (entities) => {
+
   return (action) => {
+
     return (req, res, next) => {
       try {
-
-        next( new appErrors.ForbiddenError() );
+        next();
       } catch (e) {
 
       }
